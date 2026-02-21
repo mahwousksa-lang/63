@@ -6,8 +6,8 @@ from datetime import datetime
 
 st.set_page_config(page_title="استديو مهووس الذكي", page_icon="🌟", layout="wide")
 
-GOOGLE_KEY = "AIzaSyBmXzIylxNEJWRNVZuLCVu8Xdg6ORF2QD8"
-LUMA_KEY   = "luma-f801b085-d342-4e6a-b9ff-6aa21ba4b99c-8235cf57-8e12-4387-bbb1-8d999b766219"
+GOOGLE_KEY = st.secrets.get("GOOGLE_KEY", "AIzaSyBmXzIylxNEJWRNVZuLCVu8Xdg6ORF2QD8")
+LUMA_KEY   = st.secrets.get("LUMA_KEY",   "luma-f801b085-d342-4e6a-b9ff-6aa21ba4b99c-8235cf57-8e12-4387-bbb1-8d999b766219")
 GEMINI_MODEL = "gemini-2.0-flash"
 IMAGEN_MODEL = "imagen-4.0-generate-001"
 MAHWOUS_DNA  = "Photorealistic 3D animated character Mahwous, Gulf Arab perfume expert, neatly styled dark hair, groomed beard, warm brown eyes, luxury black suit with gold tie, cinematic lighting, Pixar Disney 3D style"
@@ -16,24 +16,25 @@ LUMA_BASE = "https://api.lumalabs.ai/dream-machine/v1"
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&family=Cinzel:wght@700;900&display=swap');
-html,body,[data-testid="stAppViewContainer"],[data-testid="stMain"]{background:#0A0807!important;color:#E0D0B0!important;font-family:'Tajawal',sans-serif!important;direction:rtl}
-[data-testid="stSidebar"]{background:#100E09!important;border-left:1px solid rgba(212,175,55,.15)}
+html,body,[data-testid="stAppViewContainer"],[data-testid="stMain"]{background:#05080F!important;color:#C8D8F0!important;font-family:'Tajawal',sans-serif!important;direction:rtl}
+[data-testid="stSidebar"]{background:#080D18!important;border-left:1px solid rgba(100,160,255,.15)}
 [data-testid="stHeader"]{background:transparent!important}
-h1,h2,h3{color:#D4AF37!important;font-family:'Cinzel',serif!important}
+h1,h2,h3{color:#6EB4FF!important;font-family:'Cinzel',serif!important}
 #MainMenu,footer,[data-testid="stToolbar"]{visibility:hidden}
-[data-baseweb="tab-list"]{background:#1A1612!important;border-radius:12px;padding:4px;gap:4px}
-[data-baseweb="tab"]{color:rgba(224,208,176,.5)!important;font-family:'Tajawal',sans-serif!important;font-weight:700!important;border-radius:8px!important}
-[aria-selected="true"][data-baseweb="tab"]{background:#D4AF37!important;color:#000!important}
-textarea,.stTextInput input,.stTextArea textarea{background:#1A1612!important;border:1px solid rgba(212,175,55,.25)!important;color:#E0D0B0!important;border-radius:10px!important;font-family:'Tajawal',sans-serif!important}
-.stButton>button{background:linear-gradient(135deg,#8A6415,#D4AF37)!important;color:#000!important;font-weight:800!important;border:none!important;border-radius:10px!important;width:100%!important;font-family:'Tajawal',sans-serif!important}
-.stDownloadButton>button{background:rgba(212,175,55,.12)!important;color:#D4AF37!important;border:1px solid rgba(212,175,55,.3)!important;border-radius:10px!important;font-family:'Tajawal',sans-serif!important;font-weight:700!important}
-[data-baseweb="select"]>div{background:#1A1612!important;border-color:rgba(212,175,55,.25)!important}
-.gc{background:#1A1612;border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:18px 20px;margin-bottom:14px}
-.gcr{background:#1A1612;border:1px solid rgba(212,175,55,.15);border-radius:14px;padding:16px 20px;margin-bottom:12px;border-right:4px solid #D4AF37}
-.sl{font-size:.65rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(212,175,55,.65);padding-right:10px;border-right:3px solid #8A6415;margin-bottom:10px;display:block}
-.sb{text-align:center;background:#1A1612;border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:12px;margin:5px 0}
-.sn{font-family:'Cinzel',serif;font-size:1.5rem;color:#D4AF37;font-weight:900;display:block}
-.slb{font-size:.62rem;color:rgba(224,208,176,.4);letter-spacing:.1em;text-transform:uppercase}
+[data-baseweb="tab-list"]{background:#0D1525!important;border-radius:12px;padding:4px;gap:4px}
+[data-baseweb="tab"]{color:rgba(200,216,240,.45)!important;font-family:'Tajawal',sans-serif!important;font-weight:700!important;border-radius:8px!important}
+[aria-selected="true"][data-baseweb="tab"]{background:linear-gradient(135deg,#1A5FBF,#4A9FFF)!important;color:#fff!important}
+textarea,.stTextInput input,.stTextArea textarea{background:#0D1525!important;border:1px solid rgba(100,160,255,.25)!important;color:#C8D8F0!important;border-radius:10px!important;font-family:'Tajawal',sans-serif!important}
+.stButton>button{background:linear-gradient(135deg,#0A3A8A,#2A7FFF)!important;color:#fff!important;font-weight:800!important;border:none!important;border-radius:10px!important;width:100%!important;font-family:'Tajawal',sans-serif!important;box-shadow:0 4px 20px rgba(42,127,255,.3)!important}
+.stButton>button:hover{box-shadow:0 6px 28px rgba(42,127,255,.5)!important}
+.stDownloadButton>button{background:rgba(100,160,255,.1)!important;color:#6EB4FF!important;border:1px solid rgba(100,160,255,.3)!important;border-radius:10px!important;font-family:'Tajawal',sans-serif!important;font-weight:700!important}
+[data-baseweb="select"]>div{background:#0D1525!important;border-color:rgba(100,160,255,.25)!important}
+.gc{background:#0D1525;border:1px solid rgba(100,160,255,.18);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+.gcr{background:#0D1525;border:1px solid rgba(100,160,255,.12);border-radius:14px;padding:16px 20px;margin-bottom:12px;border-right:4px solid #2A7FFF}
+.sl{font-size:.65rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(110,180,255,.65);padding-right:10px;border-right:3px solid #1A5FBF;margin-bottom:10px;display:block}
+.sb{text-align:center;background:#0D1525;border:1px solid rgba(100,160,255,.2);border-radius:12px;padding:12px;margin:5px 0}
+.sn{font-family:'Cinzel',serif;font-size:1.5rem;color:#6EB4FF;font-weight:900;display:block}
+.slb{font-size:.62rem;color:rgba(200,216,240,.35);letter-spacing:.1em;text-transform:uppercase}
 </style>
 """, unsafe_allow_html=True)
 
@@ -43,16 +44,24 @@ for k,v in dict(analysis=None,images={},job_id=None,job_status=None,video_url=No
 
 # ── API helpers ──────────────────────────────────────────────────────────────
 def call_gemini(brief):
-    system='''أنت المدير الإبداعي لاستديو مهووس. أجب فقط بـ JSON صحيح بهذا الشكل:
-{"perfume":"اسم العطر","story":"القصة الجذابة بالعربية","scenario":[{"shot":1,"title":"عنوان","desc":"وصف","audio":"صوت","movement":"حركة كاميرا","prompt_en":"english luma prompt cinematic"}]}
-أنشئ 3 لقطات في السيناريو.'''
+    system='''أنت المدير الإبداعي لاستديو مهووس.
+أجب فقط بـ JSON object واحد (ليس array) بهذا الشكل بالضبط بدون أي نص إضافي:
+{"perfume":"اسم العطر","story":"القصة الجذابة بالعربية","scenario":[{"shot":1,"title":"عنوان","desc":"وصف المشهد","audio":"الصوت أو الحوار","movement":"حركة الكاميرا","prompt_en":"cinematic english luma prompt"},{"shot":2,"title":"عنوان","desc":"وصف","audio":"صوت","movement":"حركة","prompt_en":"prompt"},{"shot":3,"title":"عنوان","desc":"وصف","audio":"صوت","movement":"حركة","prompt_en":"prompt"}]}
+مهم جداً: الجواب يجب أن يكون object وليس array.'''
     r=requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GOOGLE_KEY}",
         json={"contents":[{"parts":[{"text":f"الفكرة: {brief}"}]}],"systemInstruction":{"parts":[{"text":system}]},
-              "generationConfig":{"responseMimeType":"application/json","temperature":1.0}},timeout=60)
+              "generationConfig":{"responseMimeType":"application/json","temperature":0.9}},timeout=60)
     r.raise_for_status()
     data=r.json()
     if "error" in data: raise Exception(data["error"]["message"])
-    return json.loads(data["candidates"][0]["content"]["parts"][0]["text"])
+    parsed = json.loads(data["candidates"][0]["content"]["parts"][0]["text"])
+    # Fix: if Gemini returns a list, take first element
+    if isinstance(parsed, list):
+        parsed = parsed[0] if parsed else {}
+    # Fix: ensure required keys exist
+    if "perfume" not in parsed:
+        raise Exception("استجابة Gemini غير صحيحة - حاول مرة أخرى")
+    return parsed
 
 def call_imagen(prompt):
     r=requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{IMAGEN_MODEL}:predict?key={GOOGLE_KEY}",
@@ -91,8 +100,8 @@ def luma_list(limit=8):
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""<div style='text-align:center;padding:18px 0 12px'>
-    <div style='width:58px;height:58px;background:#D4AF37;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:900;color:#000;box-shadow:0 0 24px rgba(212,175,55,.45)'>م</div>
-    <div style='font-family:Cinzel,serif;color:#D4AF37;font-weight:700;font-size:.95rem;margin-top:10px'>استديو مهووس الذكي</div>
+    <div style='width:58px;height:58px;background:#2A7FFF;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:900;color:#000;box-shadow:0 0 24px rgba(42,127,255,.45)'>م</div>
+    <div style='font-family:Cinzel,serif;color:#6EB4FF;font-weight:700;font-size:.95rem;margin-top:10px'>استديو مهووس الذكي</div>
     <div style='font-size:.58rem;opacity:.35;letter-spacing:.18em;margin-top:3px'>MAHWOUS AI STUDIO · 2026</div></div>""",unsafe_allow_html=True)
     st.markdown("---")
     c1,c2=st.columns(2)
@@ -111,9 +120,9 @@ with st.sidebar:
         st.rerun()
 
 # ── Header ────────────────────────────────────────────────────────────────────
-st.markdown("""<div style='padding:8px 0 16px;border-bottom:1px solid rgba(212,175,55,.12);margin-bottom:22px'>
+st.markdown("""<div style='padding:8px 0 16px;border-bottom:1px solid rgba(100,160,255,.12);margin-bottom:22px'>
 <h1 style='font-size:1.5rem;margin:0'>استديو مهووس الذكي 🌟</h1>
-<p style='font-size:.7rem;color:rgba(224,208,176,.35);letter-spacing:.15em;margin:4px 0 0'>GEMINI 2.0 · IMAGEN 4.0 · LUMA RAY 2.0</p></div>""",unsafe_allow_html=True)
+<p style='font-size:.7rem;color:rgba(200,216,240,.35);letter-spacing:.15em;margin:4px 0 0'>GEMINI 2.0 · IMAGEN 4.0 · LUMA RAY 2.0</p></div>""",unsafe_allow_html=True)
 
 tab1,tab2,tab3,tab4=st.tabs(["🧠 العقل المبدع","🖼️ صور الحملة","🎬 الفيديو","📜 السيناريو"])
 
@@ -143,14 +152,14 @@ with tab1:
         st.markdown('<span class="sl">✨ نتيجة جيمني</span>',unsafe_allow_html=True)
         a=st.session_state.analysis
         if not a:
-            st.markdown('<div style="border:2px dashed rgba(212,175,55,.12);border-radius:18px;padding:60px;text-align:center;opacity:.28"><div style="font-size:3rem;margin-bottom:12px">🧠</div><div style="font-weight:700">انتظار الإبداع...</div></div>',unsafe_allow_html=True)
+            st.markdown('<div style="border:2px dashed rgba(100,160,255,.12);border-radius:18px;padding:60px;text-align:center;opacity:.28"><div style="font-size:3rem;margin-bottom:12px">🧠</div><div style="font-weight:700">انتظار الإبداع...</div></div>',unsafe_allow_html=True)
         else:
-            st.markdown(f'<div class="gc"><div style="font-size:.6rem;color:rgba(212,175,55,.6);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px">العطر المقترح</div><div style="font-size:1.5rem;font-weight:900;color:#fff">{a.get("perfume","")}</div></div>',unsafe_allow_html=True)
-            st.markdown(f'<div class="gc"><div style="font-size:.6rem;color:rgba(212,175,55,.6);letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px">📖 القصة والهوك</div><div style="font-style:italic;font-size:.85rem;line-height:1.75;border-right:3px solid #D4AF37;padding-right:12px;color:rgba(224,208,176,.85)">{a.get("story","")}</div></div>',unsafe_allow_html=True)
+            st.markdown(f'<div class="gc"><div style="font-size:.6rem;color:rgba(110,180,255,.6);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px">العطر المقترح</div><div style="font-size:1.5rem;font-weight:900;color:#fff">{a.get("perfume","")}</div></div>',unsafe_allow_html=True)
+            st.markdown(f'<div class="gc"><div style="font-size:.6rem;color:rgba(110,180,255,.6);letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px">📖 القصة والهوك</div><div style="font-style:italic;font-size:.85rem;line-height:1.75;border-right:3px solid #2A7FFF;padding-right:12px;color:rgba(200,216,240,.85)">{a.get("story","")}</div></div>',unsafe_allow_html=True)
             sc=a.get("scenario",[])
             if sc:
-                rows="".join(f'<div style="display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)"><div style="width:30px;height:30px;background:#D4AF37;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;flex-shrink:0;font-size:.85rem">{s["shot"]}</div><div><div style="font-weight:700;font-size:.82rem;color:#fff">{s.get("title","")}</div><div style="font-size:.73rem;color:rgba(224,208,176,.5);margin-top:2px">{s.get("desc","")[:80]}...</div></div></div>' for s in sc)
-                st.markdown(f'<div class="gc"><div style="font-size:.6rem;color:rgba(212,175,55,.6);letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px">🎬 السيناريو ({len(sc)} لقطات)</div>{rows}</div>',unsafe_allow_html=True)
+                rows="".join(f'<div style="display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)"><div style="width:30px;height:30px;background:#2A7FFF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;flex-shrink:0;font-size:.85rem">{s["shot"]}</div><div><div style="font-weight:700;font-size:.82rem;color:#fff">{s.get("title","")}</div><div style="font-size:.73rem;color:rgba(200,216,240,.5);margin-top:2px">{s.get("desc","")[:80]}...</div></div></div>' for s in sc)
+                st.markdown(f'<div class="gc"><div style="font-size:.6rem;color:rgba(110,180,255,.6);letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px">🎬 السيناريو ({len(sc)} لقطات)</div>{rows}</div>',unsafe_allow_html=True)
 
 # ══ TAB 2: صور الحملة ════════════════════════════════════════════════════════
 with tab2:
@@ -174,7 +183,7 @@ with tab2:
             st.markdown('<span class="sl">🖼️ الصور</span>',unsafe_allow_html=True)
             imgs=st.session_state.images
             if not imgs:
-                st.markdown('<div style="border:2px dashed rgba(212,175,55,.1);border-radius:14px;padding:60px;text-align:center;opacity:.25"><div style="font-size:2.5rem">🖼️</div><div style="margin-top:8px">الصور ستظهر هنا</div></div>',unsafe_allow_html=True)
+                st.markdown('<div style="border:2px dashed rgba(100,160,255,.1);border-radius:14px;padding:60px;text-align:center;opacity:.25"><div style="font-size:2.5rem">🖼️</div><div style="margin-top:8px">الصور ستظهر هنا</div></div>',unsafe_allow_html=True)
             else:
                 for key,lbl in [("ig","Instagram (1:1)"),("snap","Snapchat (9:16)"),("x","Twitter (16:9)")]:
                     if imgs.get(key):
@@ -208,7 +217,7 @@ with tab3:
             color={"completed":"#50C878","failed":"#FF7070","dreaming":"#C87AFF"}.get(status,"#FFAA3C")
             icon={"completed":"✅","failed":"❌","dreaming":"🌀"}.get(status,"❓")
             label={"completed":"مكتمل!","failed":"فشل التوليد","dreaming":"جاري التوليد..."}.get(status,"غير معروف")
-            st.markdown(f'<div style="text-align:center;background:#1A1612;border-radius:12px;padding:16px;border:1px solid rgba(212,175,55,.15)"><div style="font-size:2rem;margin-bottom:6px">{icon}</div><div style="font-weight:800;color:{color}">{label}</div><div style="font-size:.62rem;opacity:.35;margin-top:4px;direction:ltr">{st.session_state.job_id}</div></div>',unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align:center;background:#0D1525;border-radius:12px;padding:16px;border:1px solid rgba(100,160,255,.15)"><div style="font-size:2rem;margin-bottom:6px">{icon}</div><div style="font-weight:800;color:{color}">{label}</div><div style="font-size:.62rem;opacity:.35;margin-top:4px;direction:ltr">{st.session_state.job_id}</div></div>',unsafe_allow_html=True)
             if st.button("🔄  تحديث الحالة"):
                 with st.spinner("جاري الفحص..."):
                     try:
@@ -233,15 +242,15 @@ with tab3:
                 gid=str(g.get("id",""))[:20]; gst=g.get("state","")
                 gurl=g.get("assets",{}).get("video","") if isinstance(g.get("assets"),dict) else ""
                 color="#50C878" if gst=="completed" else "#FFAA3C"
-                link=f'<a href="{gurl}" target="_blank" style="color:#D4AF37;font-size:.65rem">▶ مشاهدة</a>' if gurl else ""
-                st.markdown(f'<div class="gc" style="padding:10px 14px;margin-bottom:6px"><div style="display:flex;justify-content:space-between;align-items:center"><code style="font-size:.68rem;color:rgba(224,208,176,.6)">{gid}...</code><span style="font-size:.65rem;color:{color};font-weight:700">{gst}</span></div>{link}</div>',unsafe_allow_html=True)
+                link=f'<a href="{gurl}" target="_blank" style="color:#6EB4FF;font-size:.65rem">▶ مشاهدة</a>' if gurl else ""
+                st.markdown(f'<div class="gc" style="padding:10px 14px;margin-bottom:6px"><div style="display:flex;justify-content:space-between;align-items:center"><code style="font-size:.68rem;color:rgba(200,216,240,.6)">{gid}...</code><span style="font-size:.65rem;color:{color};font-weight:700">{gst}</span></div>{link}</div>',unsafe_allow_html=True)
     with R:
         st.markdown('<span class="sl">📺 عرض الفيديو</span>',unsafe_allow_html=True)
         if st.session_state.video_url:
             st.video(st.session_state.video_url)
-            st.markdown(f'<div style="text-align:center;margin-top:10px"><a href="{st.session_state.video_url}" target="_blank" style="background:#D4AF37;color:#000;padding:11px 28px;border-radius:10px;font-weight:800;text-decoration:none;font-size:.88rem">⬇️ تحميل الفيديو</a></div>',unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align:center;margin-top:10px"><a href="{st.session_state.video_url}" target="_blank" style="background:#2A7FFF;color:#fff;padding:11px 28px;border-radius:10px;font-weight:800;text-decoration:none;font-size:.88rem">⬇️ تحميل الفيديو</a></div>',unsafe_allow_html=True)
         else:
-            st.markdown('<div style="border:2px dashed rgba(212,175,55,.1);border-radius:18px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;opacity:.22;padding:80px 0"><div style="font-size:3.5rem">🎬</div><div style="font-weight:700;font-size:1rem">Cinema View</div><div style="font-size:.72rem">الفيديو يظهر هنا بعد الاكتمال</div></div>',unsafe_allow_html=True)
+            st.markdown('<div style="border:2px dashed rgba(100,160,255,.1);border-radius:18px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;opacity:.22;padding:80px 0"><div style="font-size:3.5rem">🎬</div><div style="font-weight:700;font-size:1rem">Cinema View</div><div style="font-size:.72rem">الفيديو يظهر هنا بعد الاكتمال</div></div>',unsafe_allow_html=True)
 
 # ══ TAB 4: السيناريو ══════════════════════════════════════════════════════════
 with tab4:
@@ -251,16 +260,16 @@ with tab4:
     else:
         _,C,_=st.columns([0.5,2,0.5])
         with C:
-            st.markdown(f'<div class="gc" style="margin-bottom:22px"><div style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:8px">{a.get("perfume","")}</div><div style="font-style:italic;font-size:.84rem;color:rgba(224,208,176,.65);line-height:1.75">{a.get("story","")}</div></div>',unsafe_allow_html=True)
+            st.markdown(f'<div class="gc" style="margin-bottom:22px"><div style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:8px">{a.get("perfume","")}</div><div style="font-style:italic;font-size:.84rem;color:rgba(200,216,240,.65);line-height:1.75">{a.get("story","")}</div></div>',unsafe_allow_html=True)
             for s in a.get("scenario",[]):
                 pen=f'<div style="background:rgba(180,100,255,.07);border-radius:8px;padding:8px 12px;direction:ltr;text-align:left;font-size:.72rem;color:rgba(180,100,255,.8);margin-bottom:10px">🤖 {s.get("prompt_en","")}</div>' if s.get("prompt_en") else ""
                 st.markdown(f'''<div class="gcr"><div style="display:flex;gap:16px;align-items:flex-start">
-                <div style="width:40px;height:40px;background:#D4AF37;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;font-size:1.1rem;flex-shrink:0">{s.get("shot","")}</div>
-                <div style="flex:1"><div style="font-weight:800;color:#F0D080;margin-bottom:6px">{s.get("title","")}</div>
-                <div style="font-size:.83rem;color:rgba(224,208,176,.7);line-height:1.65;margin-bottom:10px">{s.get("desc","")}</div>
+                <div style="width:40px;height:40px;background:#2A7FFF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;font-size:1.1rem;flex-shrink:0">{s.get("shot","")}</div>
+                <div style="flex:1"><div style="font-weight:800;color:#A0D4FF;margin-bottom:6px">{s.get("title","")}</div>
+                <div style="font-size:.83rem;color:rgba(200,216,240,.7);line-height:1.65;margin-bottom:10px">{s.get("desc","")}</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-                <div style="background:rgba(0,0,0,.35);border-radius:8px;padding:8px 12px"><div style="font-size:.58rem;color:#D4AF37;font-weight:700;margin-bottom:4px">🎙️ الصوت</div><div style="font-size:.75rem;font-style:italic;color:rgba(224,208,176,.55)">{s.get("audio","")}</div></div>
-                <div style="background:rgba(0,0,0,.35);border-radius:8px;padding:8px 12px"><div style="font-size:.58rem;color:#D4AF37;font-weight:700;margin-bottom:4px">📷 الكاميرا</div><div style="font-size:.75rem;color:rgba(224,208,176,.55)">{s.get("movement","")}</div></div>
+                <div style="background:rgba(0,0,0,.35);border-radius:8px;padding:8px 12px"><div style="font-size:.58rem;color:#6EB4FF;font-weight:700;margin-bottom:4px">🎙️ الصوت</div><div style="font-size:.75rem;font-style:italic;color:rgba(200,216,240,.55)">{s.get("audio","")}</div></div>
+                <div style="background:rgba(0,0,0,.35);border-radius:8px;padding:8px 12px"><div style="font-size:.58rem;color:#6EB4FF;font-weight:700;margin-bottom:4px">📷 الكاميرا</div><div style="font-size:.75rem;color:rgba(200,216,240,.55)">{s.get("movement","")}</div></div>
                 </div>{pen}</div></div></div>''',unsafe_allow_html=True)
                 if st.button(f"🎬  توليد فيديو اللقطة {s.get('shot','')}",key=f"sv_{s.get('shot','')}"):
                     st.session_state.video_prompt=s.get("prompt_en",s.get("desc","")); st.rerun()
