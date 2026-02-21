@@ -71,18 +71,35 @@ def call_imagen(prompt):
     if "error" in data: raise Exception(data["error"]["message"])
     return "data:image/png;base64,"+data["predictions"][0]["bytesBase64Encoded"]
 
-def luma_create(prompt,char_url="",prod_url=""):
-    headers={"Authorization":f"Bearer {LUMA_KEY}","Content-Type":"application/json"}
-    body={"prompt":f"{prompt}. {MAHWOUS_DNA}. Ultra HD cinematic luxury perfume ad.","aspect_ratio":"9:16"}
-    if char_url or prod_url:
-        kf={}
-        if char_url: kf["frame0"]={"type":"image","url":char_url}
-        if prod_url: kf["frame1"]={"type":"image","url":prod_url}
-        body["keyframes"]=kf
-    r=requests.post(f"{LUMA_BASE}/generations",json=body,headers=headers,timeout=30)
-    r.raise_for_status()
-    data=r.json()
-    if "id" not in data: raise Exception(str(data))
+def luma_create(prompt, char_url="", prod_url=""):
+    headers = {"Authorization": f"Bearer {LUMA_KEY}", "Content-Type": "application/json"}
+    full_prompt = f"{prompt}. {MAHWOUS_DNA}. Ultra HD cinematic luxury perfume advertisement."
+    # Clean body - only valid Luma v1 fields
+    body = {
+        "prompt": full_prompt,
+        "aspect_ratio": "9:16",
+        "loop": False,
+    }
+    # Only add keyframes if real URLs provided
+    if char_url.startswith("http") or prod_url.startswith("http"):
+        kf = {}
+        if char_url.startswith("http"):
+            kf["frame0"] = {"type": "image", "url": char_url}
+        if prod_url.startswith("http"):
+            kf["frame1"] = {"type": "image", "url": prod_url}
+        body["keyframes"] = kf
+    r = requests.post(f"{LUMA_BASE}/generations", json=body, headers=headers, timeout=30)
+    # Show actual Luma error message instead of generic HTTP error
+    if not r.ok:
+        try:
+            err = r.json()
+            msg = err.get("detail") or err.get("message") or err.get("error") or str(err)
+        except Exception:
+            msg = r.text
+        raise Exception(f"Luma {r.status_code}: {msg}")
+    data = r.json()
+    if "id" not in data:
+        raise Exception(f"لا يوجد ID في الرد: {data}")
     return data["id"]
 
 def luma_poll(job_id):
